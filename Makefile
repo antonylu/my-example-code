@@ -1,15 +1,14 @@
-obj-m += foo_uevent.o foo_kobject.o
+#
+# Makefile for kernel test
+#
+PWD         := $(shell pwd) 
+KVERSION    := $(shell uname -r)
+KERNEL_DIR   = /usr/src/linux-headers-$(KVERSION)/
+
+MODULE_NAME  = uevent
+obj-m       := $(MODULE_NAME).o   
 
 all:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
-	rm -rf foo_*.mod.*
-	rm -rf modules.order
-	rm -rf Module.symvers
-	ls -la foo*.o
-	rm -rf .foo*.*
-	rm -rf  .tmp_versions/
-
+	make -C $(KERNEL_DIR) M=$(PWD) modules
 clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
-	ls -la
-	
+	make -C $(KERNEL_DIR) M=$(PWD) clean
